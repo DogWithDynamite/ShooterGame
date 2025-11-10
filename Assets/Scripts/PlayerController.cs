@@ -62,15 +62,21 @@ public class PlayerController : MonoBehaviour
         float horizontalScreenSize = gameManager.horizontalScreenSize;
         float verticalScreenSize = gameManager.verticalScreenSize;
 
+        // Horizontal wrap
         if (transform.position.x <= -horizontalScreenSize || transform.position.x > horizontalScreenSize)
         {
             transform.position = new Vector3(transform.position.x * -1, transform.position.y, 0);
         }
 
-        if (transform.position.y <= -verticalScreenSize || transform.position.y > verticalScreenSize)
-        {
-            transform.position = new Vector3(transform.position.x, transform.position.y * -1, 0);
-        }
+        // clamp: comfines plane to the bottom half 
+        float bottomLimit = -verticalScreenSize + 5.8f;
+        float topLimit = 0f;
 
+        transform.position = new Vector3(
+            transform.position.x,
+            Mathf.Clamp(transform.position.y, bottomLimit, topLimit),
+            transform.position.z
+        );
     }
+
 }
