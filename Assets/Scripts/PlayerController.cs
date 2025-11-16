@@ -69,7 +69,7 @@ public class PlayerController : MonoBehaviour
         }
 
         // clamp: comfines plane to the bottom half 
-        float bottomLimit = -verticalScreenSize + 5.8f;
+        float bottomLimit = -gameManager.verticalScreenSize + 2.5f;
         float topLimit = 0f;
 
         transform.position = new Vector3(
