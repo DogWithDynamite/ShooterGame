@@ -16,6 +16,9 @@ public class PlayerController : MonoBehaviour
     public GameObject bulletPrefab;
     public GameObject explosionPrefab;
 
+    public GameObject Shield;
+    private bool isShieldActive = false;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -23,6 +26,11 @@ public class PlayerController : MonoBehaviour
         lives = 3;
         speed = 5.0f;
         gameManager.ChangeLivesText(lives);
+
+        // shield starts off
+        if (Shield != null)
+            Shield.SetActive(false);
+
     }
 
     // Update is called once per frame
@@ -34,8 +42,15 @@ public class PlayerController : MonoBehaviour
 
     public void LoseALife()
     {
-        //lives = lives - 1;
-        //lives -= 1;
+        if (isShieldActive)
+        {
+            // Shield absorbs the hit
+            isShieldActive = false;
+            if (Shield != null)
+                Shield.SetActive(false);
+            return;
+        }
+
         lives--;
         gameManager.ChangeLivesText(lives);
         if (lives == 0)
@@ -77,6 +92,27 @@ public class PlayerController : MonoBehaviour
             Mathf.Clamp(transform.position.y, bottomLimit, topLimit),
             transform.position.z
         );
+    }
+
+    public void ActivateShield()
+    {
+        if (isShieldActive) return; // Already active
+
+        isShieldActive = true;
+        if (Shield != null)
+        {
+            Shield.SetActive(true); 
+        }
+
+        StartCoroutine(ShieldTimer());
+    }
+
+    private IEnumerator ShieldTimer()
+    {
+        yield return new WaitForSeconds(5f);
+        isShieldActive = false;
+        if (Shield != null)
+            Shield.SetActive(false);
     }
 
 }
