@@ -9,6 +9,8 @@ public class ShieldPowerUp : MonoBehaviour
 
     private GameManager gameManager;
 
+    public AudioClip shieldUp;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -32,6 +34,8 @@ public class ShieldPowerUp : MonoBehaviour
             whatDidIHit.GetComponent<PlayerController>().ActivateShield();
 
             Destroy(gameObject);
+
+            AudioSource.PlayClipAtPoint(shieldUp, transform.position);
         }
     }
 }

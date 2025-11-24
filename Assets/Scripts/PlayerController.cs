@@ -15,8 +15,10 @@ public class PlayerController : MonoBehaviour
 
     public GameObject bulletPrefab;
     public GameObject explosionPrefab;
+    public AudioClip shooting;
 
     public GameObject Shield;
+    public AudioClip shieldDown;
     private bool isShieldActive = false;
 
     // Start is called before the first frame update
@@ -48,6 +50,7 @@ public class PlayerController : MonoBehaviour
             isShieldActive = false;
             if (Shield != null)
                 Shield.SetActive(false);
+                AudioSource.PlayClipAtPoint(shieldDown, transform.position);
             return;
         }
 
@@ -65,6 +68,7 @@ public class PlayerController : MonoBehaviour
         if(Input.GetKeyDown(KeyCode.Space))
         {
             Instantiate(bulletPrefab, transform.position + new Vector3(0, 0.5f, 0), Quaternion.identity);
+            AudioSource.PlayClipAtPoint(shooting, transform.position);
         }
     }
 
@@ -107,12 +111,20 @@ public class PlayerController : MonoBehaviour
         StartCoroutine(ShieldTimer());
     }
 
+    public void DeactivateShield()
+    {
+        if (isShieldActive)
+        {
+           isShieldActive = false;
+           Shield.SetActive(false);
+           AudioSource.PlayClipAtPoint(shieldDown, transform.position);
+        }
+    }
+
     private IEnumerator ShieldTimer()
     {
         yield return new WaitForSeconds(5f);
-        isShieldActive = false;
-        if (Shield != null)
-            Shield.SetActive(false);
+        DeactivateShield();
     }
 
 }
