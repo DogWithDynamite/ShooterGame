@@ -51,7 +51,7 @@ public class GameManager : MonoBehaviour
 
     void CreateCoin()
     {
-        Instantiate(coinPrefab, new Vector3(Random.Range(-horizontalScreenSize, horizontalScreenSize), Random.Range(-verticalScreenSize, verticalScreenSize) * 0.5f, 0), Quaternion.identity);
+        Instantiate(coinPrefab, new Vector3(Random.Range(-horizontalScreenSize, horizontalScreenSize * 0.9f), Random.Range(-verticalScreenSize, verticalScreenSize) * (1 - 0.6f), 0), Quaternion.identity);
     }
 
     void CreateSky()

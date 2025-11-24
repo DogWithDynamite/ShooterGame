@@ -9,6 +9,8 @@ public class Coin : MonoBehaviour
 
     private GameManager gameManager;
 
+    public AudioClip coin;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -22,6 +24,7 @@ public class Coin : MonoBehaviour
         {
             gameManager.AddScore(1);
             Destroy(this.gameObject);
+            AudioSource.PlayClipAtPoint(coin, transform.position);
         }
     }
 }
