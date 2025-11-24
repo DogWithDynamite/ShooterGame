@@ -17,13 +17,10 @@ public class PlayerController : MonoBehaviour
     public GameObject explosionPrefab;
     public AudioClip shooting;
 
-<<<<<<< Updated upstream
-=======
     public GameObject Shield;
     public AudioClip shieldDown;
     private bool isShieldActive = false;
 
->>>>>>> Stashed changes
     // Start is called before the first frame update
     void Start()
     {
@@ -31,6 +28,11 @@ public class PlayerController : MonoBehaviour
         lives = 3;
         speed = 5.0f;
         gameManager.ChangeLivesText(lives);
+
+        // shield starts off
+        if (Shield != null)
+            Shield.SetActive(false);
+
     }
 
     // Update is called once per frame
@@ -42,10 +44,6 @@ public class PlayerController : MonoBehaviour
 
     public void LoseALife()
     {
-<<<<<<< Updated upstream
-        //lives = lives - 1;
-        //lives -= 1;
-=======
         if (isShieldActive)
         {
             // Shield absorbs the hit
@@ -56,7 +54,6 @@ public class PlayerController : MonoBehaviour
             return;
         }
 
->>>>>>> Stashed changes
         lives--;
         gameManager.ChangeLivesText(lives);
         if (lives == 0)
@@ -84,23 +81,40 @@ public class PlayerController : MonoBehaviour
         float horizontalScreenSize = gameManager.horizontalScreenSize;
         float verticalScreenSize = gameManager.verticalScreenSize;
 
+        // Horizontal wrap
         if (transform.position.x <= -horizontalScreenSize || transform.position.x > horizontalScreenSize)
         {
             transform.position = new Vector3(transform.position.x * -1, transform.position.y, 0);
         }
 
-        if (transform.position.y <= -verticalScreenSize || transform.position.y > verticalScreenSize)
+        // clamp: comfines plane to the bottom half 
+        float bottomLimit = -gameManager.verticalScreenSize + 2.5f;
+        float topLimit = 0f;
+
+        transform.position = new Vector3(
+            transform.position.x,
+            Mathf.Clamp(transform.position.y, bottomLimit, topLimit),
+            transform.position.z
+        );
+    }
+
+    public void ActivateShield()
+    {
+        if (isShieldActive) return; // Already active
+
+        isShieldActive = true;
+        if (Shield != null)
         {
-            transform.position = new Vector3(transform.position.x, transform.position.y * -1, 0);
+            Shield.SetActive(true); 
         }
 
+        StartCoroutine(ShieldTimer());
     }
-<<<<<<< Updated upstream
-=======
 
     public void DeactivateShield()
     {
-        if (isShieldActive) {
+        if (isShieldActive)
+        {
            isShieldActive = false;
            Shield.SetActive(false);
            AudioSource.PlayClipAtPoint(shieldDown, transform.position);
@@ -113,5 +127,4 @@ public class PlayerController : MonoBehaviour
         DeactivateShield();
     }
 
->>>>>>> Stashed changes
 }
